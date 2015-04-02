@@ -13,7 +13,6 @@ class Student < Person
   end
 end
 
-
 class Instructor < Person
   def teach 
     puts "Everything in Ruby is an object"
@@ -26,3 +25,10 @@ chris.greet
 
 student = Student.new("Christina")
 student.greet
+
+chris.teach
+student.learn
+# Note: the following will create an error (undefined method, because
+# method teach is undefined on Student class 
+student.teach
+
