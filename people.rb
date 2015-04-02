@@ -20,13 +20,13 @@ class Instructor < Person
 end 
 
 
-chris = Instructor.new("Chris")
-chris.greet
+instructor = Instructor.new("Chris")
+instructor.greet
 
 student = Student.new("Christina")
 student.greet
 
-chris.teach
+instructor.teach
 student.learn
 # Note: the following will create an error (undefined method, because
 # method teach is undefined on Student class 
