@@ -1,6 +1,6 @@
 class Salestax
   def exempt?(s)
-    if s=~ /(book|chocolate|pill)/i
+    if s=~ /.*(book|chocolate|pill).*/i
       true
     end
   end
@@ -17,14 +17,27 @@ class Salestax
     price = words.last.to_f
     n = (words.size)-2 
 
+    tax = 0
+    taxp = 0 
     if !exempt?(s) 
-      price = price * 1.10
-      price = price.round(2)
+      taxp = 10
     end
 
     if s=~ /imported/ 
-      price = price * 1.05
+      taxp += 5 
     end
+
+    # taxp is now say 10 on a domestic CD
+    # tax is taxp / 100.0 * price 
+    if taxp 
+      tax = taxp / 100.0 * price 
+      def fixup(r)
+        (r * 20).round / 20.00
+      end
+      tax = fixup ( tax ) 
+    end
+
+    price += tax
 
     z = words[0..n].join(" ") 
     z << " " << "%02.2f" % price  
