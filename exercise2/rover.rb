@@ -5,12 +5,20 @@ class Rover
     @direction = direction
   end
 
+  def set_instructions(s)
+    @instructions = s 
+  end
+
   def handle_instruction(i)
     if i == 'M' then
       move
     else
       turn(i)
     end
+  end
+
+  def run
+    command(@instructions)
   end
 
   def read_instruction(i)
