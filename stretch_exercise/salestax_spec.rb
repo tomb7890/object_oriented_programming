@@ -63,4 +63,5 @@ describe "Salestax Tests"  do
     expected = "1 box of imported chocolates: 11.85"
     expect(@s.compute(input)).to eql expected 
   end
+
 end
