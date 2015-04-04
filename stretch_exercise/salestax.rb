@@ -31,10 +31,19 @@ class Salestax
     # tax is taxp / 100.0 * price 
     if taxp 
       tax = taxp / 100.0 * price 
-      def fixup(r)
-        (r * 20).round / 20.00
+
+      def fixup(tax)
+        tax_cents = (tax * 100).round
+        mod = tax_cents % 5 
+        if ( mod > 0 ) then
+          tax_cents = ( tax_cents / 5 ) * 5
+          tax_cents = tax_cents + 5 
+          tax = tax_cents / 100.0 
+        end
+        tax
       end
-      tax = fixup ( tax ) 
+
+      tax = fixup(tax) 
     end
 
     price += tax
