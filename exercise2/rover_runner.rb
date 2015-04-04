@@ -3,11 +3,12 @@ require 'rover'
 def main
   rovers = []
 
+  p = Plateau.new 
   # "Your program should accept 5 inputs with gets." 
   puts "Please enter the size of the grid"
   input = gets.chomp
   x,y = input.split(" ")
-  # game.set_grid_size
+  p.set_plateau_size(x,y)
 
   puts "Please enter the initial start position and header of rover #1."
   input = gets.chomp

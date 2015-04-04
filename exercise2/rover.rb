@@ -1,3 +1,9 @@
+class Plateau 
+  def set_plateau_size(x,y)
+    @plateau_size = x,y
+  end
+end 
+
 class Rover
   def initialize(x,y,direction)
     @x = x 
@@ -33,9 +39,6 @@ class Rover
     "#{@x} #{@y} #{@direction}"
   end
 
-  def set_plateau_size(x,y)
-    @plateau_size = x,y
-  end
 
   def move
     case @direction 
