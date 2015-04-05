@@ -1,4 +1,4 @@
-require 'salestax'
+require_relative 'salestax'
 
 describe "Salestax Tests"  do  
 
@@ -22,7 +22,7 @@ describe "Salestax Tests"  do
     expect(@s.compute(input)).to eql expected 
   end
 
-  it "should calculate  chocolate bars" do 
+  it "should calculate chocolate bars" do 
     input = "1 chocolate bar at 0.85"
     expected = "1 chocolate bar: 0.85"
     expect(@s.compute(input)).to eql expected 
@@ -34,25 +34,25 @@ describe "Salestax Tests"  do
     expect(@s.compute(input)).to eql expected 
   end
 
-  it "should calcualate imported perfume" do  
+  it "should calculate imported perfume" do  
     input="1 imported bottle of perfume at 47.50"
     expected="1 imported bottle of perfume: 54.65"
     expect(@s.compute(input)).to eql expected 
   end
 
-  it "should calcualate imported bottle of perfume at 27.99" do 
+  it "should calculate imported bottle of perfume #2" do 
     input = "1 imported bottle of perfume at 27.99"
     expected="1 imported bottle of perfume: 32.19"
     expect(@s.compute(input)).to eql expected 
   end
   
-  it "should blah" do 
+  it "should calculate perfume" do 
     input = "1 bottle of perfume at 18.99"
     expected = "1 bottle of perfume: 20.89"
     expect(@s.compute(input)).to eql expected 
   end
 
-  it "should pills 1" do 
+  it "should calculate " do 
     input = "1 packet of headache pills at 9.75"
     expected = "1 packet of headache pills: 9.75"
     expect(@s.compute(input)).to eql expected 
