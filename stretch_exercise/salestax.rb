@@ -1,15 +1,5 @@
 class Salestax
-  def initialize
-    @totaltax = 0 
-    @totalprice = 0 
-  end
-
-  def exempt?(s)
-    # except books, food, and medical products
-    if s=~ /.*(book|chocolate|pill).*/i
-      true
-    end
-  end
+  public 
 
   def process_file(filename)
     File.readlines(filename).each do |line|
@@ -27,6 +17,45 @@ class Salestax
 
   def total
     (@totaltax + @totalprice).round(2)
+  end
+
+  def process_receipt_line(line)
+    item = itemname_from_receipt_line(line)
+    price = price_from_receipt_line(line)
+    tax = tax_on_item(item, price)
+    format_output_string(item, price, tax)
+  end
+
+  def report(filename)
+    r = ''
+    File.readlines(filename).each do |line|
+      item = itemname_from_receipt_line(line)
+      price = price_from_receipt_line(line)
+      tax = tax_on_item(item, price)
+      
+      if price > 0 then
+        cost = "%02.2f" % ( price + tax )  
+        r = r + "#{item} #{cost}\n"
+        @totaltax = @totaltax + tax
+        @totalprice = @totalprice + price
+      end       
+    end
+    r <<  "Sales Taxes: %02.2f \n" % total_sales_tax
+    r << "Total: #{total}\n"
+  end
+
+  private
+
+  def initialize
+    @totaltax = 0 
+    @totalprice = 0 
+  end
+
+  def exempt?(s)
+    # except books, food, and medical products
+    if s=~ /.*(book|chocolate|pill).*/i
+      true
+    end
   end
 
   def round_up(tax)
@@ -80,29 +109,4 @@ class Salestax
     rc
   end
 
-  def compute1(line)
-    item = itemname_from_receipt_line(line)
-    price = price_from_receipt_line(line)
-    tax = tax_on_item(item, price)
-    format_output_string(item, price, tax)
-  end
-  
-  def report(filename)
-    r = ''
-    File.readlines(filename).each do |line|
-      item = itemname_from_receipt_line(line)
-      price = price_from_receipt_line(line)
-      tax = tax_on_item(item, price)
-      
-      if price > 0 then
-        cost = "%02.2f" % ( price + tax )  
-        r = r + "#{item} #{cost}\n"
-        @totaltax = @totaltax + tax
-        @totalprice = @totalprice + price
-      end       
-    end
-
-    r <<  "Sales Taxes: %02.2f \n" % total_sales_tax
-    r << "Total: #{total}\n"
-  end
 end 
