@@ -1,13 +1,12 @@
+require_relative 'salestax'
 
-require 'salestax'
-
-describe "Salestax Addl"  do  
+describe "Salestax Totals"  do  
 
   it "should verify basic testing" do
     expect("5 5").to eql "5 5"
   end
 
-  it "should compute total sales tax" do 
+  it "should compute example #1 totals correctly" do 
     s = Salestax.new 
     s.read_input("input1.dat")
     expected = 1.50
@@ -17,7 +16,7 @@ describe "Salestax Addl"  do
     expect(s.total).to eql expected 
   end
 
-  it "should compute total sales tax2" do 
+  it "should compute example #2 totals correctly" do 
     s = Salestax.new 
     s.read_input("input2.dat")
     expected = 7.65
@@ -27,7 +26,7 @@ describe "Salestax Addl"  do
     expect(s.total).to eql expected 
   end
 
-  it "should compute total sales tax3" do 
+  it "should compute example #3 totals correctly" do 
     s = Salestax.new 
     s.read_input("input3.dat")
     expected = 6.70
@@ -36,5 +35,4 @@ describe "Salestax Addl"  do
     expected = 74.68
     expect(s.total).to eql expected 
   end
-
 end
