@@ -1,21 +1,13 @@
 require_relative 'salestax'
 
-puts"INPUT:\n\nOutput 1:\n\n"
+# this file creates a report of three test files  
+(1..3).each do |n| 
+  puts "\nOutput %d:\n\n" % n 
+  s = Salestax.new 
+  text = s.report("input%d.dat" % n )
+  puts "#{text}\n\n"
+end 
 
-s = Salestax.new 
-s.read_input("input1.dat")
-x=  s.report
-puts "#{x}\n\n"
-
-s = Salestax.new 
-s.read_input("input2.dat")
-x=  s.report
-puts "#{x}\n\n"
-
-s = Salestax.new 
-s.read_input("input3.dat")
-x=  s.report
-puts "#{x}\n\n"
 
 
 

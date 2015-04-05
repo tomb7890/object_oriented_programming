@@ -1,7 +1,7 @@
 class Salestax
   def initialize
-    @items = [] 
     @totaltax = 0 
+    @totalprice = 0 
   end
 
   def exempt?(s)
@@ -11,22 +11,22 @@ class Salestax
     end
   end
 
-  def read_input(filename)
+  def process_file(filename)
     File.readlines(filename).each do |line|
-      compute(line)
+      item = itemname_from_receipt_line(line)
+      price = price_from_receipt_line(line)
+      tax = tax_on_item(item, price)
+      @totaltax = @totaltax + tax
+      @totalprice = @totalprice + price
     end
   end
-  
+
   def total_sales_tax
     @totaltax.round(2)
   end
 
   def total
-    t = total_sales_tax
-    @items.each do |item|
-      t = t + item[:p]
-    end
-    t.round(2)
+    (@totaltax + @totalprice).round(2)
   end
 
   def round_up(tax)
@@ -40,58 +40,69 @@ class Salestax
     tax
   end
 
-  def compute(s)
-    # 10% on all goods, except books, food, 
-    # and medical products
-
-    s.gsub!(/\ at\ */, ": " )
-
-    words = s.split(" ")
-    price = words.last.to_f
-    n = (words.size)-2 
-
+  def tax_on_item(name, price) 
     tax = 0
     taxp = 0 
-    if !exempt?(s) 
+    if !exempt?(name) then
       taxp = 10
     end
-
-    if s=~ /imported/ 
+    if name  =~ /imported/ 
       taxp += 5 
     end
-
-    # taxp is now say 10 on a domestic CD
-    # tax is taxp / 100.0 * price 
-    if taxp 
+    if taxp > 0 then
       tax = taxp / 100.0 * price 
       tax = round_up(tax) 
     end
-    @totaltax = @totaltax + tax.round(2)
-    itemname = words[0..n].join(" ") 
-    rc = ""
-    rc << itemname  << " " << "%02.2f" % ( price + tax )  
-    # store the item, its price, and its tax 
-    stuff = { i: itemname, p: price, t: tax }
-    @items.push(stuff)
-    rc 
+    tax
   end
 
-  def report
-    r = ''
-    @items.each do |item| 
-      stuff = item 
-      itemname = stuff[:i]
-      price = stuff[:p]
-      if price > 0 then
-        tax = stuff[:t]
+  def itemname_from_receipt_line(l)
+    words = l.split(" ")
+    n = (words.size)-2 
+    itemname = words[0..n].join(" ") 
+  end
 
+  def price_from_receipt_line(l)
+    words = l.split(" ")
+    price = words.last.to_f
+  end
+
+  def replace_colons_with_ats(s)
+    # the input data has 'at' usage, whereas
+    # expected output has colons seperating items from price
+    s.gsub!(/\ at\ */, ": " )
+  end
+
+  def format_output_string(item, price, tax)
+    rc = ""
+    rc << item  << " " << "%02.2f" % ( price + tax )  
+    rc = replace_colons_with_ats( rc )
+    rc
+  end
+
+  def compute1(line)
+    item = itemname_from_receipt_line(line)
+    price = price_from_receipt_line(line)
+    tax = tax_on_item(item, price)
+    format_output_string(item, price, tax)
+  end
+  
+  def report(filename)
+    r = ''
+    File.readlines(filename).each do |line|
+      item = itemname_from_receipt_line(line)
+      price = price_from_receipt_line(line)
+      tax = tax_on_item(item, price)
+      
+      if price > 0 then
         cost = "%02.2f" % ( price + tax )  
-        r = r + "#{itemname} #{cost}\n"
+        r = r + "#{item} #{cost}\n"
+        @totaltax = @totaltax + tax
+        @totalprice = @totalprice + price
       end       
     end
-    r = r + "Sales Taxes: %02.2f \n" % total_sales_tax
-    r = r + "Total: #{total}\n"
-    return r
-  end
 
+    r <<  "Sales Taxes: %02.2f \n" % total_sales_tax
+    r << "Total: #{total}\n"
+  end
 end 

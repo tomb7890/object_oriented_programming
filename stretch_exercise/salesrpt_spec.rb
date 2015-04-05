@@ -8,7 +8,7 @@ describe "Salestax Totals"  do
 
   it "should compute example #1 totals correctly" do 
     s = Salestax.new 
-    s.read_input("input1.dat")
+    s.process_file("input1.dat")
     expected = 1.50
     expect(s.total_sales_tax).to eql expected 
 
@@ -18,7 +18,7 @@ describe "Salestax Totals"  do
 
   it "should compute example #2 totals correctly" do 
     s = Salestax.new 
-    s.read_input("input2.dat")
+    s.process_file("input2.dat")
     expected = 7.65
     expect(s.total_sales_tax).to eql expected 
 
@@ -28,7 +28,7 @@ describe "Salestax Totals"  do
 
   it "should compute example #3 totals correctly" do 
     s = Salestax.new 
-    s.read_input("input3.dat")
+    s.process_file("input3.dat")
     expected = 6.70
     expect(s.total_sales_tax).to eql expected 
 
